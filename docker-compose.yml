@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: peach-crm-db
+    environment:
+      POSTGRES_DB: peach_crm
+      POSTGRES_USER: peach_user
+      POSTGRES_PASSWORD: peach_pass_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - peach_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U peach_user -d peach_crm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: peach-crm-app
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://peach_user:peach_pass_2026@db:5432/peach_crm
+      JWT_SECRET: YeshivaCRM2026SecretKey!niro770
+      NODE_ENV: development
+      PORT: 3001
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "node db/init.js && node server.js"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  peach_db_data:
