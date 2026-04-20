@@ -244,9 +244,11 @@ RETURNS TRIGGER AS $$
 BEGIN NEW.updated_at = NOW(); RETURN NEW; END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS donors_updated_at ON donors;
 CREATE TRIGGER donors_updated_at BEFORE UPDATE ON donors
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
+DROP TRIGGER IF EXISTS campaigns_updated_at ON campaigns;
 CREATE TRIGGER campaigns_updated_at BEFORE UPDATE ON campaigns
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 
