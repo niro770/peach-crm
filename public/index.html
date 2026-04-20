@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peach CRM — ישיבת המלך 770</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#e8632a;--primary-light:#ff8a50;--primary-dark:#c44d18;
+  --sidebar:#1a1f2e;--sidebar-hover:#252c3f;--sidebar-active:#2e3650;
+  --bg:#f0f2f7;--card:#ffffff;--border:#e5e7eb;
+  --text:#1a1f2e;--muted:#6b7280;--light:#9ca3af;
+  --success:#10b981;--warning:#f59e0b;--danger:#ef4444;--info:#3b82f6;
+  --radius:10px;--shadow:0 1px 3px rgba(0,0,0,0.08);
+}
+body{font-family:'Heebo',sans-serif;font-size:13px;background:var(--bg);color:var(--text);overflow:hidden;height:100vh}
+
+/* ── LOGIN ── */
+#login-screen{display:flex;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#1a1f2e 0%,#2e3650 100%)}
+.login-box{background:#fff;border-radius:16px;padding:40px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo .icon{width:52px;height:52px;background:var(--primary);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#fff;margin-bottom:10px}
+.login-logo h1{font-size:22px;font-weight:800;color:var(--text)}
+.login-logo p{font-size:12px;color:var(--muted);margin-top:3px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;display:block}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:'Heebo',sans-serif;outline:none;transition:.15s}
+.form-input:focus{border-color:var(--primary)}
+.btn-login{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;font-family:'Heebo',sans-serif;cursor:pointer;transition:.15s;margin-top:6px}
+.btn-login:hover{background:var(--primary-dark)}
+.login-error{background:#fee2e2;color:#991b1b;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;display:none}
+
+/* ── APP SHELL ── */
+#app{display:none;height:100vh;overflow:hidden}
+.shell{display:flex;height:100%}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;background:var(--sidebar);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.logo{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.logo-inner{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0}
+.logo-text{font-size:19px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.logo-sub{font-size:10px;color:rgba(255,255,255,0.35);margin-top:1px}
+.nav{flex:1;padding:10px 8px}
+.nav-section{font-size:9.5px;color:rgba(255,255,255,0.28);text-transform:uppercase;letter-spacing:1px;padding:12px 10px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.6);transition:.15s;margin-bottom:1px;font-size:13px}
+.nav-item:hover{background:var(--sidebar-hover);color:rgba(255,255,255,0.9)}
+.nav-item.active{background:var(--sidebar-active);color:#fff}
+.nav-item.active .ni{color:var(--primary-light)}
+.ni{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.nav-badge{margin-right:auto;background:var(--primary);color:#fff;font-size:10px;padding:1px 7px;border-radius:10px;font-weight:700}
+.sidebar-footer{padding:10px 8px 14px;border-top:1px solid rgba(255,255,255,0.07)}
+.user-card{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer}
+.user-card:hover{background:var(--sidebar-hover)}
+.user-av{width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.user-name{font-size:12px;color:rgba(255,255,255,0.85);font-weight:600}
+.user-role{font-size:10px;color:rgba(255,255,255,0.38)}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:0 20px;height:54px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.topbar-title{font-size:17px;font-weight:700;color:var(--text)}
+.topbar-spacer{flex:1}
+.search-wrap{position:relative}
+.search-input{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 12px 7px 32px;font-size:13px;font-family:'Heebo',sans-serif;outline:none;width:220px;transition:.15s}
+.search-input:focus{border-color:var(--primary);width:260px}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--light);font-size:14px;pointer-events:none}
+.icon-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);position:relative;transition:.15s}
+.icon-btn:hover{background:var(--bg)}
+.notif-dot{position:absolute;top:5px;left:5px;width:7px;height:7px;background:var(--primary);border-radius:50%;border:2px solid #fff}
+.content{flex:1;overflow-y:auto;padding:20px}
+
+/* ── PAGES ── */
+.page{display:none;animation:fadeIn .2s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── COMMON COMPONENTS ── */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px}
+.page-title{font-size:20px;font-weight:800;color:var(--text)}
+.page-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Heebo',sans-serif;cursor:pointer;border:none;transition:.15s;text-decoration:none}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--text)}
+.btn-outline:hover{background:var(--bg)}
+.btn-danger{background:none;border:1.5px solid var(--danger);color:var(--danger)}
+.btn-sm{padding:5px 12px;font-size:12px;border-radius:7px}
+.btn-xs{padding:3px 9px;font-size:11px;border-radius:6px}
+.btn-ghost{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;font-size:12px;font-family:'Heebo',sans-serif;transition:.15s}
+.btn-ghost:hover{background:var(--bg);color:var(--text)}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+.card-header{padding:13px 16px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.card-title{font-size:14px;font-weight:700;color:var(--text)}
+.card-body{padding:14px 16px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kpi-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:14px 16px}
+.kpi-label{font-size:11px;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.kpi-value{font-size:24px;font-weight:800;color:var(--text);line-height:1;margin-bottom:5px}
+.kpi-change{font-size:11px;font-weight:500}
+.kpi-change.up{color:var(--success)}.kpi-change.down{color:var(--danger)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.grid-3{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.bg{background:#d1fae5;color:#065f46}.bo{background:#ffedd5;color:#9a3412}
+.bb{background:#dbeafe;color:#1e40af}.br{background:#fee2e2;color:#991b1b}
+.bp{background:#ede9fe;color:#5b21b6}.bgr{background:#f3f4f6;color:#374151}
+.bw{background:#fef9c3;color:#854d0e}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.av-b{background:#dbeafe;color:#1e40af}.av-g{background:#d1fae5;color:#065f46}
+.av-o{background:#ffedd5;color:#9a3412}.av-p{background:#ede9fe;color:#5b21b6}
+.av-r{background:#fee2e2;color:#991b1b}.av-t{background:#ccfbf1;color:#0f766e}
+.table{width:100%;border-collapse:collapse}
+.table th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:8px 12px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap}
+.table td{padding:10px 12px;border-bottom:1px solid #f3f4f6;font-size:13px;vertical-align:middle}
+.table tr:last-child td{border-bottom:none}
+.table tbody tr:hover td{background:#fafafa;cursor:pointer}
+.donor-row{display:flex;align-items:center;gap:9px}
+.d-name{font-size:13px;font-weight:600;color:var(--text)}
+.d-sub{font-size:11px;color:var(--muted)}
+.progress-bar{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:var(--primary);transition:width .4s}
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
+.chip{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:.15s}
+.chip:hover:not(.active){background:var(--bg)}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.mini-stat{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f3f4f6}
+.mini-stat:last-child{border-bottom:none}
+.ms-label{font-size:12px;color:var(--muted)}
+.ms-val{font-size:13px;font-weight:700;color:var(--text)}
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f3f4f6}
+.activity-item:last-child{border-bottom:none}
+.act-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.ai-g{background:#d1fae5}.ai-b{background:#dbeafe}.ai-o{background:#ffedd5}.ai-p{background:#ede9fe}.ai-r{background:#fee2e2}
+.act-text{font-size:12px;color:var(--text);line-height:1.4}
+.act-time{font-size:11px;color:var(--light);margin-top:2px}
+.tl-item{display:flex;gap:12px;padding-bottom:14px}
+.tl-line{display:flex;flex-direction:column;align-items:center}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--primary);flex-shrink:0;margin-top:3px}
+.tl-stem{width:2px;flex:1;background:#e5e7eb;margin:4px 0}
+.tl-content{flex:1}
+.tl-title{font-size:13px;font-weight:600}
+.tl-meta{font-size:11px;color:var(--light);margin-top:2px}
+.tl-amount{font-size:13px;font-weight:700;color:var(--success)}
+.form-group{margin-bottom:14px}
+.form-label{font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;display:block}
+input[type=text],input[type=email],input[type=tel],input[type=number],input[type=date],input[type=password],select,textarea{
+  width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Heebo',sans-serif;outline:none;background:#fff;color:var(--text);transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--primary)}
+.ai-insight{background:linear-gradient(135deg,#fef9c3,#fef3c7);border:1px solid #fde68a;border-radius:var(--radius);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-bottom:16px}
+.ai-label{font-size:10px;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.ai-text{font-size:12px;color:#78350f;line-height:1.6}
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-icon{font-size:38px;margin-bottom:8px}
+.loading{display:flex;align-items:center;justify-content:center;padding:30px;color:var(--muted);gap:8px;font-size:13px}
+.spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:24px;background:var(--text);color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;transform:translateY(80px);opacity:0;transition:.3s;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--danger)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.modal-header{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.modal-title{font-size:16px;font-weight:700}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:2px 6px;border-radius:6px;line-height:1}
+.modal-close:hover{background:var(--bg)}
+.modal-body{padding:18px 20px}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+
+/* ── DASHBOARD ── */
+.chart-bars{display:flex;align-items:flex-end;gap:5px;height:80px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
+.bar{width:100%;background:var(--primary);border-radius:3px 3px 0 0;opacity:.8;min-height:3px;transition:.3s}
+.bar-label{font-size:9.5px;color:var(--light)}
+.tasks-list{display:flex;flex-direction:column;gap:8px}
+.task-item{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--bg);border-radius:8px}
+.task-cb{width:16px;height:16px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px}
+.task-cb.done{background:var(--success);border-color:var(--success);color:#fff}
+.task-text{flex:1;font-size:13px}
+.task-text.done{text-decoration:line-through;color:var(--muted)}
+.task-due{font-size:11px;color:var(--muted)}
+
+/* ── PROFILE ── */
+.profile-banner{display:flex;align-items:center;gap:14px;padding:18px;background:linear-gradient(135deg,#1a1f2e,#2e3650);border-radius:var(--radius);color:#fff;margin-bottom:14px}
+.profile-av{width:52px;height:52px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0}
+.profile-name{font-size:18px;font-weight:800}
+.profile-id{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px}
+.profile-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.profile-tag{background:rgba(255,255,255,0.1);padding:2px 9px;border-radius:10px;font-size:10px;color:rgba(255,255,255,0.8)}
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:14px}
+.tab{padding:9px 16px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:.15s}
+.tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field-item .fl{font-size:11px;color:var(--muted);margin-bottom:2px;font-weight:600}
+.field-item .fv{font-size:13px;font-weight:500}
+.ded-item{background:var(--bg);border-radius:8px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px}
+.ded-date{font-size:11px;color:var(--primary);font-weight:700;min-width:80px}
+.ded-text{font-size:13px}
+
+/* ── CAMPAIGNS ── */
+.camp-card{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);background:var(--card)}
+.camp-header{padding:14px;color:#fff}
+.camp-header.orange{background:linear-gradient(135deg,var(--primary),#ff7043)}
+.camp-header.blue{background:linear-gradient(135deg,#3b82f6,#8b5cf6)}
+.camp-header.green{background:linear-gradient(135deg,#10b981,#059669)}
+.camp-name{font-size:15px;font-weight:700}
+.camp-meta{font-size:11px;opacity:.8;margin-top:2px}
+.camp-body{padding:14px}
+
+/* ── TELEMARKETING ── */
+.call-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.call-panel-header{padding:12px 16px;background:var(--sidebar);color:#fff;display:flex;align-items:center;gap:10px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#10b981;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.call-script{background:var(--bg);border-radius:8px;padding:12px;margin-bottom:12px;font-size:13px;line-height:1.7;border-right:3px solid var(--primary)}
+
+/* ── MAILING ── */
+.msg-bubble-out{background:var(--primary);color:#fff;border-radius:10px 10px 3px 10px;padding:9px 12px;font-size:13px;max-width:85%;line-height:1.5}
+.msg-bubble-in{background:var(--bg);color:var(--text);border-radius:10px 10px 10px 3px;padding:9px 12px;font-size:13px;max-width:85%;align-self:flex-end;line-height:1.5}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">P</div>
+      <h1>Peach CRM</h1>
+      <p>ישיבת המלך 770 — מערכת ניהול תורמים</p>
+    </div>
+    <div class="login-error" id="login-error"></div>
+    <div class="form-group">
+      <label class="form-label">אימייל</label>
+      <input type="email" class="form-input" id="login-email" value="admin@peach-crm.local" placeholder="admin@peach-crm.local">
+    </div>
+    <div class="form-group">
+      <label class="form-label">סיסמה</label>
+      <input type="password" class="form-input" id="login-pass" value="Admin1234!" placeholder="••••••••">
+    </div>
+    <button class="btn-login" id="login-btn" onclick="doLogin()">כניסה למערכת</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-inner">
+          <div class="logo-icon">P</div>
+          <div>
+            <div class="logo-text">Peach</div>
+            <div class="logo-sub">ניהול תורמים</div>
+          </div>
+        </div>
+      </div>
+      <nav class="nav">
+        <div class="nav-section">ראשי</div>
+        <div class="nav-item active" data-page="dashboard"><span class="ni">📊</span> לוח בקרה</div>
+        <div class="nav-item" data-page="donors"><span class="ni">👥</span> תורמים <span class="nav-badge" id="nb-donors">—</span></div>
+        <div class="nav-section">גיוס כספים</div>
+        <div class="nav-item" data-page="payments"><span class="ni">💳</span> תשלומים</div>
+        <div class="nav-item" data-page="campaigns"><span class="ni">📢</span> קמפיינים</div>
+        <div class="nav-item" data-page="telemarketing"><span class="ni">📞</span> טלמרקטינג <span class="nav-badge" id="nb-calls">—</span></div>
+        <div class="nav-section">תקשורת</div>
+        <div class="nav-item" data-page="mailing"><span class="ni">✉️</span> דיוור</div>
+        <div class="nav-item" data-page="tasks"><span class="ni">✅</span> משימות <span class="nav-badge" id="nb-tasks">—</span></div>
+        <div class="nav-item" data-page="reports"><span class="ni">📈</span> דוחות</div>
+        <div class="nav-section">מערכת</div>
+        <div class="nav-item" data-page="settings"><span class="ni">⚙️</span> הגדרות</div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="user-av" id="user-av">—</div>
+          <div>
+            <div class="user-name" id="user-name">—</div>
+            <div class="user-role" id="user-role">—</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+      <header class="topbar">
+        <span class="topbar-title" id="page-title">לוח בקרה</span>
+        <div class="topbar-spacer"></div>
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" id="global-search" placeholder="חיפוש תורמים...">
+        </div>
+        <button class="icon-btn" id="notif-btn" title="התראות">🔔<span class="notif-dot" id="notif-dot" style="display:none"></span></button>
+        <button class="icon-btn" onclick="doLogout()" title="התנתק">🚪</button>
+      </header>
+
+      <div class="content">
+
+        <!-- DASHBOARD -->
+        <div class="page active" id="page-dashboard">
+          <div class="page-header">
+            <div>
+              <div class="page-title" id="dash-greeting">שלום 👋</div>
+              <div class="page-sub" id="dash-date"></div>
+            </div>
+            <button class="btn btn-primary" onclick="openModal('new-payment-modal')">+ תרומה חדשה</button>
+          </div>
+          <div class="ai-insight" id="ai-insight">
+            <span style="font-size:18px;flex-shrink:0">🤖</span>
+            <div><div class="ai-label">תובנת AI</div><div class="ai-text" id="ai-text">טוען נתונים...</div></div>
+          </div>
+          <div class="kpi-grid" id="kpi-grid">
+            <div class="kpi-card"><div class="kpi-label">תרומות החודש</div><div class="kpi-value" id="kpi-month">—</div><div class="kpi-change up" id="kpi-month-sub">—</div></div>
+            <div class="kpi-card"><div class="kpi-label">תורמים פעילים</div><div class="kpi-value" id="kpi-donors">—</div><div class="kpi-change up" id="kpi-donors-sub">—</div></div>
+            <div class="kpi-card"><div class="kpi-label">הו"ק פעילים</div><div class="kpi-value" id="kpi-so">—</div><div class="kpi-change up" id="kpi-so-sub">—</div></div>
+            <div class="kpi-card"><div class="kpi-label">תורמי זהב</div><div class="kpi-value" id="kpi-gold">—</div><div class="kpi-change">מהמאגר</div></div>
+          </div>
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-header"><span class="card-title">תרומות לפי חודש (השנה)</span></div>
+              <div class="card-body">
+                <div class="chart-bars" id="monthly-chart"></div>
+                <div style="display:flex;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+                  <div><div class="kpi-label">סה"כ השנה</div><div style="font-size:16px;font-weight:800" id="dash-year-total">—</div></div>
+                  <div><div class="kpi-label">ממוצע חודשי</div><div style="font-size:16px;font-weight:800" id="dash-avg">—</div></div>
+                  <div><div class="kpi-label">חודש מוביל</div><div style="font-size:16px;font-weight:800;color:var(--primary)" id="dash-peak">—</div></div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="card">
+                <div class="card-header"><span class="card-title">אמצעי תרומה</span></div>
+                <div class="card-body" id="methods-chart"></div>
+              </div>
+              <div class="card">
+                <div class="card-header"><span class="card-title">משימות פתוחות</span><button class="btn-ghost" onclick="navTo('tasks')">הכל</button></div>
+                <div class="card-body" style="padding:10px 14px" id="dash-tasks"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">תורמים אחרונים</span><button class="btn btn-sm btn-outline" onclick="navTo('donors')">כל התורמים</button></div>
+            <div class="card-body" style="padding:0"><table class="table"><thead><tr><th>שם</th><th>טלפון</th><th>סכום</th><th>אמצעי</th><th>סטטוס</th></tr></thead><tbody id="dash-recent-donors"></tbody></table></div>
+          </div>
+        </div>
+
+        <!-- DONORS -->
+        <div class="page" id="page-donors">
+          <div class="page-header">
+            <div><div class="page-title">תורמים</div><div class="page-sub" id="donors-count-sub">טוען...</div></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" onclick="exportDonors()">📤 ייצוא</button>
+              <button class="btn btn-primary" onclick="openModal('new-donor-modal')">+ תורם חדש</button>
+            </div>
+          </div>
+          <div class="filter-bar">
+            <div class="chip active" data-filter="">הכל</div>
+            <div class="chip" data-filter="active">הו"ק פעיל</div>
+            <div class="chip" data-filter="gold">זהב</div>
+            <div class="chip" data-filter="no_email">ללא מייל</div>
+            <div class="chip" data-filter="no_phone">ללא טלפון</div>
+            <div style="margin-right:auto;display:flex;gap:8px;align-items:center">
+              <input type="text" id="donors-search" placeholder="🔍  חיפוש שם / טלפון..." style="width:200px" oninput="debounceDonorSearch()">
+              <select id="donors-sort" onchange="loadDonors()" style="width:140px">
+                <option value="last_name">מיון: שם</option>
+                <option value="total_donations">מיון: סכום תרומות</option>
+                <option value="last_donation_date">מיון: תרומה אחרונה</option>
+                <option value="created_at">מיון: תאריך הצטרפות</option>
+              </select>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body" style="padding:0">
+              <div id="donors-loading" class="loading"><div class="spinner"></div> טוען תורמים...</div>
+              <table class="table" id="donors-table" style="display:none">
+                <thead><tr><th>שם</th><th>טלפון</th><th>מייל</th><th>עיר</th><th>סכום הו"ק</th><th>אמצעי</th><th>סה"כ תרומות</th><th>סטטוס</th></tr></thead>
+                <tbody id="donors-tbody"></tbody>
+              </table>
+              <div id="donors-empty" class="empty" style="display:none"><div class="empty-icon">🔍</div><div>לא נמצאו תורמים</div></div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;font-size:12px;color:var(--muted)">
+            <span id="donors-page-info"></span>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-sm btn-outline" id="donors-prev" onclick="changeDonorPage(-1)">→ הקודם</button>
+              <button class="btn btn-sm btn-outline" id="donors-next" onclick="changeDonorPage(1)">הבא ←</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DONOR PROFILE -->
+        <div class="page" id="page-profile">
+          <div class="page-header">
+            <button class="btn btn-outline btn-sm" onclick="navTo('donors')">→ חזרה לתורמים</button>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" id="profile-call-btn">📞 התקשר</button>
+              <button class="btn btn-primary btn-sm" onclick="openModal('new-payment-modal')">+ תרומה חדשה</button>
+            </div>
+          </div>
+          <div id="profile-loading" class="loading"><div class="spinner"></div> טוען תיק תורם...</div>
+          <div id="profile-content" style="display:none">
+            <div class="profile-banner">
+              <div class="profile-av" id="prof-av"></div>
+              <div style="flex:1">
+                <div class="profile-name" id="prof-name"></div>
+                <div class="profile-id" id="prof-id"></div>
+                <div class="profile-tags" id="prof-tags"></div>
+              </div>
+              <div style="text-align:center">
+                <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">סה"כ תרומות</div>
+                <div style="font-size:26px;font-weight:800;color:var(--primary-light)" id="prof-total"></div>
+              </div>
+            </div>
+            <div class="ai-insight" id="prof-ai">
+              <span style="font-size:18px;flex-shrink:0">🤖</span>
+              <div><div class="ai-label">AI — פרופיל תורם</div><div class="ai-text" id="prof-ai-text"></div></div>
+            </div>
+            <div class="grid-2">
+              <div class="card">
+                <div class="card-header"><span class="card-title">פרטים אישיים</span><button class="btn-ghost" onclick="openEditDonorModal()">✏️ עריכה</button></div>
+                <div class="card-body">
+                  <div class="field-grid" id="prof-fields"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header"><span class="card-title">היסטוריית תרומות</span></div>
+                <div class="card-body" style="padding:10px 14px"><div id="prof-timeline"></div></div>
+              </div>
+            </div>
+            <div class="card" style="margin-bottom:14px">
+              <div class="card-header"><span class="card-title">הקדשות</span><button class="btn btn-sm btn-outline" onclick="openModal('new-ded-modal')">+ הוסף הקדשה</button></div>
+              <div class="card-body" id="prof-dedications"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-title">פעילות אחרונה</span></div>
+              <div class="card-body" style="padding:10px 14px" id="prof-activity"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAYMENTS -->
+        <div class="page" id="page-payments">
+          <div class="page-header">
+            <div><div class="page-title">תשלומים ועסקאות</div><div class="page-sub">ניהול הכנסות וגביה</div></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" id="export-payments-btn">📤 ייצוא CSV</button>
+              <button class="btn btn-primary" onclick="openModal('new-payment-modal')">+ עסקה חדשה</button>
+            </div>
+          </div>
+          <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)" id="payments-kpis"></div>
+          <div class="filter-bar">
+            <div class="chip active" data-pay-filter="">הכל</div>
+            <div class="chip" data-pay-filter="success">הצליח</div>
+            <div class="chip" data-pay-filter="failed">סירובים</div>
+            <div class="chip" data-pay-filter="pending">ממתין</div>
+          </div>
+          <div class="card">
+            <div class="card-body" style="padding:0">
+              <div id="payments-loading" class="loading"><div class="spinner"></div> טוען...</div>
+              <table class="table" id="payments-table" style="display:none">
+                <thead><tr><th>תורם</th><th>סכום</th><th>אמצעי</th><th>תאריך חיוב</th><th>סטטוס</th><th>קבלה</th></tr></thead>
+                <tbody id="payments-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- CAMPAIGNS -->
+        <div class="page" id="page-campaigns">
+          <div class="page-header">
+            <div><div class="page-title">קמפיינים</div><div class="page-sub">ניהול קמפיינים לגיוס המונים</div></div>
+            <button class="btn btn-primary" onclick="openModal('new-campaign-modal')">+ קמפיין חדש</button>
+          </div>
+          <div id="campaigns-loading" class="loading"><div class="spinner"></div> טוען...</div>
+          <div id="campaigns-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px"></div>
+          <div id="campaigns-empty" class="empty" style="display:none"><div class="empty-icon">📢</div><div>אין קמפיינים עדיין</div></div>
+        </div>
+
+        <!-- TELEMARKETING -->
+        <div class="page" id="page-telemarketing">
+          <div class="page-header">
+            <div><div class="page-title">טלמרקטינג</div><div class="page-sub" id="tele-sub">טוען תור שיחות...</div></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" onclick="loadCallQueue()">🔄 רענן תור</button>
+              <button class="btn btn-primary" id="start-session-btn" onclick="startCallSession()">▶️ התחל שיחה</button>
+            </div>
+          </div>
+          <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)" id="tele-kpis"></div>
+          <div class="grid-2">
+            <div class="call-panel" id="call-panel">
+              <div class="call-panel-header">
+                <div class="live-dot" id="call-live-dot" style="background:#6b7280"></div>
+                <div>
+                  <div style="font-size:14px;font-weight:700" id="call-donor-name">בחר תורם מהתור</div>
+                  <div style="font-size:11px;color:rgba(255,255,255,0.45)" id="call-donor-phone">—</div>
+                </div>
+                <div style="margin-right:auto;display:flex;gap:6px">
+                  <button class="btn btn-sm" id="end-call-btn" style="background:var(--danger);color:#fff;display:none" onclick="endCall()">🔴 סיים שיחה</button>
+                </div>
+              </div>
+              <div style="padding:14px">
+                <div class="call-script" id="call-script">בחר תורם מהתור כדי להתחיל שיחה.</div>
+                <div class="form-group">
+                  <div class="form-label">תוצאת שיחה</div>
+                  <select id="call-outcome" style="margin-bottom:8px">
+                    <option value="">בחר תוצאה...</option>
+                    <option value="donation">תרומה ✅</option>
+                    <option value="interested_callback">מעוניין — לחזור</option>
+                    <option value="not_answered">לא ענה</option>
+                    <option value="not_interested">לא מעוניין</option>
+                    <option value="wrong_number">מספר שגוי</option>
+                  </select>
+                  <div id="donation-amount-wrap" style="display:none;margin-bottom:8px">
+                    <input type="number" id="call-donation-amount" placeholder="סכום תרומה (₪)" min="1">
+                  </div>
+                  <div id="callback-date-wrap" style="display:none;margin-bottom:8px">
+                    <input type="date" id="call-callback-date" placeholder="תאריך לחזרה">
+                  </div>
+                  <textarea id="call-notes" rows="2" placeholder="הערות שיחה..." style="margin-bottom:8px"></textarea>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-primary btn-sm" id="save-call-btn" onclick="saveCall()" disabled>💾 שמור ועבור לבא</button>
+                  <button class="btn btn-outline btn-sm" id="skip-call-btn" onclick="skipCall()" disabled>⏭️ דלג</button>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-title">תור שיחות היום</span></div>
+              <div class="card-body" style="padding:8px 14px" id="call-queue-list">
+                <div class="loading"><div class="spinner"></div> טוען...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAILING -->
+        <div class="page" id="page-mailing">
+          <div class="page-header">
+            <div><div class="page-title">דיוור</div><div class="page-sub">SMS · ניוזלטר · מייל אוטומטי</div></div>
+            <button class="btn btn-primary" onclick="openModal('new-mailing-modal')">+ שליחה חדשה</button>
+          </div>
+          <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)" id="mailing-kpis"></div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">היסטוריית דיוורים</span></div>
+            <div class="card-body" style="padding:0">
+              <div id="mailing-loading" class="loading"><div class="spinner"></div> טוען...</div>
+              <table class="table" id="mailing-table" style="display:none">
+                <thead><tr><th>נושא</th><th>סוג</th><th>נשלח ל</th><th>תאריך</th><th>סטטוס</th><th>פעולה</th></tr></thead>
+                <tbody id="mailing-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TASKS -->
+        <div class="page" id="page-tasks">
+          <div class="page-header">
+            <div><div class="page-title">משימות</div><div class="page-sub" id="tasks-sub"></div></div>
+            <button class="btn btn-primary" onclick="openModal('new-task-modal')">+ משימה חדשה</button>
+          </div>
+          <div class="grid-2" id="tasks-grid">
+            <div class="loading"><div class="spinner"></div> טוען...</div>
+          </div>
+        </div>
+
+        <!-- REPORTS -->
+        <div class="page" id="page-reports">
+          <div class="page-header">
+            <div><div class="page-title">דוחות וסטטיסטיקות</div></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-outline btn-sm" onclick="exportPaymentsCSV()">📥 ייצוא Excel</button>
+            </div>
+          </div>
+          <div class="kpi-grid" id="reports-kpis"></div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><span class="card-title">פירוט לפי אמצעי תרומה</span></div>
+              <div class="card-body" id="reports-methods"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-title">פירוט לפי עיר</span></div>
+              <div class="card-body">
+                <div class="mini-stat"><span class="ms-label">ירושלים</span><span class="ms-val">54 תורמים</span></div>
+                <div class="mini-stat"><span class="ms-label">בני ברק</span><span class="ms-val">23 תורמים</span></div>
+                <div class="mini-stat"><span class="ms-label">רמות</span><span class="ms-val">18 תורמים</span></div>
+                <div class="mini-stat"><span class="ms-label">גילה</span><span class="ms-val">12 תורמים</span></div>
+                <div class="mini-stat"><span class="ms-label">אחר</span><span class="ms-val">93 תורמים</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">תורמים מובילים</span></div>
+            <div class="card-body" style="padding:0">
+              <table class="table"><thead><tr><th>#</th><th>שם</th><th>סה"כ תרומות</th><th>הו"ק</th><th>תג</th></tr></thead>
+              <tbody id="reports-top-donors"></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS -->
+        <div class="page" id="page-settings">
+          <div class="page-header">
+            <div><div class="page-title">הגדרות מערכת</div></div>
+            <button class="btn btn-primary" onclick="saveSettings()">💾 שמור</button>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><span class="card-title">פרטי הארגון</span></div>
+              <div class="card-body">
+                <div class="form-group"><label class="form-label">שם הארגון</label><input type="text" id="set-org-name" value="ישיבת המלך 770"></div>
+                <div class="form-group"><label class="form-label">מספר עמותה</label><input type="text" id="set-org-num" value="580123456"></div>
+                <div class="form-group"><label class="form-label">טלפון</label><input type="text" id="set-org-phone" value="+972-2-123-4567"></div>
+                <div class="form-group"><label class="form-label">מייל</label><input type="email" id="set-org-email" value="office@yeshiva770.org"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-title">שינוי סיסמה</span></div>
+              <div class="card-body">
+                <div class="form-group"><label class="form-label">סיסמה נוכחית</label><input type="password" id="set-old-pass"></div>
+                <div class="form-group"><label class="form-label">סיסמה חדשה</label><input type="password" id="set-new-pass"></div>
+                <button class="btn btn-outline" onclick="changePassword()">🔒 שנה סיסמה</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">אינטגרציות</span></div>
+            <div class="card-body">
+              <div class="mini-stat"><span class="ms-label">Backend API</span><span><span class="badge bg" id="api-status">בודק...</span></span></div>
+              <div class="mini-stat"><span class="ms-label">PostgreSQL</span><span><span class="badge bgr" id="db-status">לא נבדק</span></span></div>
+              <div class="mini-stat"><span class="ms-label">SMS Gateway</span><span><span class="badge bo">לא מחובר</span></span></div>
+              <div class="mini-stat"><span class="ms-label">מסוף סליקה</span><span><span class="badge bo">לא מחובר</span></span></div>
+              <div style="margin-top:12px">
+                <label class="form-label">API Server URL</label>
+                <input type="text" id="api-url-input" value="http://localhost:3001/api">
+                <button class="btn btn-outline btn-sm" style="margin-top:8px" onclick="testApiConnection()">🔌 בדוק חיבור</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+    </div><!-- /main -->
+  </div><!-- /shell -->
+</div><!-- /app -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="new-donor-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">+ תורם חדש</div>
+      <button class="modal-close" onclick="closeModal('new-donor-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2" style="margin-bottom:0">
+        <div class="form-group"><label class="form-label">שם פרטי *</label><input type="text" id="nd-first-name"></div>
+        <div class="form-group"><label class="form-label">שם משפחה *</label><input type="text" id="nd-last-name"></div>
+        <div class="form-group"><label class="form-label">טלפון נייד</label><input type="tel" id="nd-mobile"></div>
+        <div class="form-group"><label class="form-label">אימייל</label><input type="email" id="nd-email"></div>
+        <div class="form-group"><label class="form-label">שם האמא</label><input type="text" id="nd-mothers-name"></div>
+        <div class="form-group"><label class="form-label">עיר</label><input type="text" id="nd-city"></div>
+        <div class="form-group"><label class="form-label">אמצעי תרומה</label>
+          <select id="nd-method"><option value="">בחר...</option><option>הו"ק</option><option>הע"ב</option><option>מזומן</option><option>המחאה</option><option>ביט</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">סכום הו"ק חודשי (₪)</label><input type="number" id="nd-amount" min="0"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ווטסאפ</label>
+        <select id="nd-whatsapp"><option value="true">כן</option><option value="false">לא</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('new-donor-modal')">ביטול</button>
+      <button class="btn btn-primary" onclick="createDonor()">💾 שמור תורם</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="new-payment-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">+ עסקה / תרומה חדשה</div>
+      <button class="modal-close" onclick="closeModal('new-payment-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">תורם *</label><input type="text" id="np-donor-search" placeholder="חפש שם תורם..." oninput="searchDonorForPayment()"><div id="np-donor-results" style="max-height:140px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;display:none;margin-top:4px"></div><input type="hidden" id="np-donor-id"></div>
+      <div class="grid-2" style="margin-bottom:0">
+        <div class="form-group"><label class="form-label">סכום (₪) *</label><input type="number" id="np-amount" min="1"></div>
+        <div class="form-group"><label class="form-label">סוג</label><select id="np-type"><option value="one_time">חד פעמי</option><option value="standing_order">הוראת קבע</option><option value="check">המחאה</option><option value="cash">מזומן</option><option value="bank_transfer">העברה בנקאית</option></select></div>
+        <div class="form-group"><label class="form-label">אמצעי תשלום</label><input type="text" id="np-method" placeholder="אשראי / ביט / בנק..."></div>
+        <div class="form-group"><label class="form-label">תאריך חיוב</label><input type="date" id="np-date"></div>
+      </div>
+      <div class="form-group"><label class="form-label">הערות</label><textarea id="np-notes" rows="2"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('new-payment-modal')">ביטול</button>
+      <button class="btn btn-primary" onclick="createPayment()">💾 שמור עסקה</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="new-campaign-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">+ קמפיין חדש</div>
+      <button class="modal-close" onclick="closeModal('new-campaign-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">שם הקמפיין *</label><input type="text" id="nc-name"></div>
+      <div class="form-group"><label class="form-label">תיאור</label><textarea id="nc-desc" rows="2"></textarea></div>
+      <div class="grid-2" style="margin-bottom:0">
+        <div class="form-group"><label class="form-label">סוג</label><select id="nc-type"><option value="fundraising">גיוס כספים</option><option value="crowdfunding">גיוס המונים</option><option value="recurring">מנויים חוזרים</option></select></div>
+        <div class="form-group"><label class="form-label">יעד (₪)</label><input type="number" id="nc-goal" min="0"></div>
+        <div class="form-group"><label class="form-label">תאריך התחלה</label><input type="date" id="nc-start"></div>
+        <div class="form-group"><label class="form-label">תאריך סיום</label><input type="date" id="nc-end"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('new-campaign-modal')">ביטול</button>
+      <button class="btn btn-primary" onclick="createCampaign()">💾 צור קמפיין</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="new-task-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">+ משימה חדשה</div>
+      <button class="modal-close" onclick="closeModal('new-task-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">כותרת *</label><input type="text" id="nt-title"></div>
+      <div class="form-group"><label class="form-label">תיאור</label><textarea id="nt-desc" rows="2"></textarea></div>
+      <div class="grid-2" style="margin-bottom:0">
+        <div class="form-group"><label class="form-label">עדיפות</label><select id="nt-priority"><option value="normal">רגיל</option><option value="high">גבוה</option><option value="urgent">דחוף</option><option value="low">נמוך</option></select></div>
+        <div class="form-group"><label class="form-label">תאריך יעד</label><input type="date" id="nt-due"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('new-task-modal')">ביטול</button>
+      <button class="btn btn-primary" onclick="createTask()">💾 שמור</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="new-mailing-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">+ שליחה חדשה</div>
+      <button class="modal-close" onclick="closeModal('new-mailing-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2" style="margin-bottom:0">
+        <div class="form-group"><label class="form-label">סוג</label><select id="nm-type"><option value="sms">SMS</option><option value="email">מייל</option><option value="whatsapp">ווטסאפ</option></select></div>
+        <div class="form-group"><label class="form-label">קהל יעד</label><select id="nm-audience"><option value="all">כל התורמים</option><option value="active">הו"ק פעיל</option><option value="gold">תורמי זהב</option></select></div>
+      </div>
+      <div class="form-group"><label class="form-label">נושא (למייל)</label><input type="text" id="nm-subject"></div>
+      <div class="form-group"><label class="form-label">תוכן ההודעה *</label><textarea id="nm-body" rows="5" placeholder="ניתן להשתמש ב: {שם}, {סכום_הוק}"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('new-mailing-modal')">ביטול</button>
+      <button class="btn btn-outline" onclick="saveMailing('draft')">💾 שמור טיוטה</button>
+      <button class="btn btn-primary" onclick="saveMailing('send')">📤 שלח עכשיו</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="new-ded-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">+ הקדשה חדשה</div>
+      <button class="modal-close" onclick="closeModal('new-ded-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">תאריך עברי</label><input type="text" id="ded-hdate" placeholder="כ״ג סיון"></div>
+      <div class="form-group"><label class="form-label">תאריך לועזי</label><input type="date" id="ded-gdate"></div>
+      <div class="form-group"><label class="form-label">טקסט ההקדשה *</label><textarea id="ded-text" rows="3" placeholder="לע"נ / לזכות / יום הולדת..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('new-ded-modal')">ביטול</button>
+      <button class="btn btn-primary" onclick="createDedication()">💾 שמור הקדשה</button>
+    </div>
+  </div>
+</div>
+
+<script src="api.js"></script>
+<script>
+// ── STATE ──
+let currentPage = 'dashboard';
+let currentDonorId = null;
+let currentDonorData = null;
+let donorsPage = 1;
+let donorsTotal = 0;
+let donorsFilter = '';
+let callQueue = [];
+let callQueueIndex = 0;
+let callStartTime = null;
+let searchTimer = null;
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', async () => {
+  const token = localStorage.getItem('peach_token');
+  if (token) { window.peachAPI.setToken(token); await initApp(); }
+  else { showLogin(); }
+
+  document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+  // Nav clicks
+  document.querySelectorAll('.nav-item[data-page]').forEach(el => {
+    el.addEventListener('click', () => navTo(el.dataset.page));
+  });
+
+  // Filter chips — donors
+  document.querySelectorAll('.chip[data-filter]').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-filter]').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      donorsFilter = el.dataset.filter;
+      donorsPage = 1;
+      loadDonors();
+    });
+  });
+
+  // Filter chips — payments
+  document.querySelectorAll('.chip[data-pay-filter]').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.chip[data-pay-filter]').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      loadPayments({ status: el.dataset.payFilter || undefined });
+    });
+  });
+
+  // Call outcome change
+  document.getElementById('call-outcome').addEventListener('change', e => {
+    document.getElementById('donation-amount-wrap').style.display = e.target.value === 'donation' ? 'block' : 'none';
+    document.getElementById('callback-date-wrap').style.display = e.target.value === 'interested_callback' ? 'block' : 'none';
+  });
+
+  // Global search
+  document.getElementById('global-search').addEventListener('input', e => {
+    if (e.target.value.length >= 2) {
+      navTo('donors');
+      document.getElementById('donors-search').value = e.target.value;
+      debounceDonorSearch();
+    }
+  });
+
+  // Today's date in payment modal
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('np-date').value = today;
+
+  window.addEventListener('peach:logout', showLogin);
+});
+
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-error');
+  err.style.display = 'none';
+  btn.textContent = 'מתחבר...'; btn.disabled = true;
+  try {
+    await window.peachAPI.login(email, pass);
+    await initApp();
+  } catch (e) {
+    err.textContent = e.message === 'Invalid credentials' ? 'שם משתמש או סיסמה שגויים' : 'שגיאת חיבור — ודא שהשרת פועל';
+    err.style.display = 'block';
+  } finally {
+    btn.textContent = 'כניסה למערכת'; btn.disabled = false;
+  }
+}
+
+function doLogout() {
+  window.peachAPI.logout();
+  showLogin();
+}
+
+async function initApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  try {
+    const user = await window.peachAPI.getMe();
+    const initials = user.name.split(' ').slice(0,2).map(w=>w[0]).join('');
+    document.getElementById('user-av').textContent = initials;
+    document.getElementById('user-name').textContent = user.name;
+    document.getElementById('user-role').textContent = user.role === 'admin' ? 'מנהל מערכת' : 'צוות';
+    document.getElementById('dash-greeting').textContent = `שלום, ${user.name.split(' ')[0]} 👋`;
+  } catch {}
+
+  const days = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+  const now = new Date();
+  document.getElementById('dash-date').textContent = `יום ${days[now.getDay()]}, ${now.toLocaleDateString('he-IL')}`;
+  document.getElementById('np-date').value = now.toISOString().split('T')[0];
+
+  loadDashboard();
+  checkApiHealth();
+}
+
+// ── NAVIGATION ──
+function navTo(page) {
+  currentPage = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${page}`)?.classList.add('active');
+  document.querySelectorAll('.nav-item[data-page]').forEach(el => {
+    el.classList.toggle('active', el.dataset.page === page);
+  });
+  const titles = {dashboard:'לוח בקרה',donors:'תורמים',profile:'תיק תורם',payments:'תשלומים',campaigns:'קמפיינים',telemarketing:'טלמרקטינג',mailing:'דיוור',tasks:'משימות',reports:'דוחות',settings:'הגדרות'};
+  document.getElementById('page-title').textContent = titles[page] || page;
+
+  if (page === 'donors' && document.getElementById('donors-tbody').innerHTML === '') loadDonors();
+  if (page === 'payments') loadPayments();
+  if (page === 'campaigns') loadCampaigns();
+  if (page === 'telemarketing') { loadCallQueue(); loadTeleStats(); }
+  if (page === 'mailing') loadMailings();
+  if (page === 'tasks') loadTasks();
+  if (page === 'reports') loadReports();
+}
+
+// ── DASHBOARD ──
+async function loadDashboard() {
+  try {
+    const [stats, paySum, tasks] = await Promise.all([
+      window.peachAPI.getDonorStats(),
+      window.peachAPI.getPaymentSummary(),
+      window.peachAPI.getTasks({ status: 'open' }),
+    ]);
+
+    const fmt = n => n ? '₪' + parseInt(n).toLocaleString('he-IL') : '₪0';
+
+    document.getElementById('kpi-month').textContent = fmt(paySum.this_month);
+    document.getElementById('kpi-month-sub').textContent = `${paySum.success_count} עסקאות החודש`;
+    document.getElementById('kpi-donors').textContent = parseInt(stats.totals.total_donors).toLocaleString();
+    document.getElementById('kpi-donors-sub').textContent = `${stats.totals.active_standing_orders} בהו"ק פעיל`;
+    document.getElementById('kpi-so').textContent = stats.totals.active_standing_orders;
+    document.getElementById('kpi-so-sub').textContent = fmt(stats.totals.monthly_recurring) + ' / חודש';
+    document.getElementById('kpi-gold').textContent = stats.totals.gold_donors;
+    document.getElementById('nb-donors').textContent = stats.totals.total_donors;
+
+    // Monthly chart
+    const months = ['ינו','פבר','מרץ','אפר','מאי','יונ','יול','אוג','ספט','אוק','נוב','דצמ'];
+    const trend = stats.monthly_trend || [];
+    const maxVal = Math.max(...trend.map(r => parseFloat(r.total) || 0), 1);
+    document.getElementById('monthly-chart').innerHTML = months.map((m, i) => {
+      const d = trend.find(r => new Date(r.month).getMonth() === i);
+      const h = d ? Math.round((parseFloat(d.total) / maxVal) * 100) : 8;
+      return `<div class="bar-wrap"><div class="bar" style="height:${h}%"></div><div class="bar-label">${m}</div></div>`;
+    }).join('');
+
+    const yearTotal = trend.reduce((s,r) => s + parseFloat(r.total||0), 0);
+    const avgM = trend.length ? yearTotal / trend.length : 0;
+    const peakM = trend.reduce((best, r) => parseFloat(r.total) > parseFloat(best.total||0) ? r : best, {total:0});
+    document.getElementById('dash-year-total').textContent = fmt(yearTotal);
+    document.getElementById('dash-avg').textContent = fmt(avgM);
+    document.getElementById('dash-peak').textContent = peakM.month ? new Date(peakM.month).toLocaleDateString('he-IL',{month:'long'}) : '—';
+
+    // Methods
+    document.getElementById('methods-chart').innerHTML = (stats.by_method||[]).slice(0,5).map(m =>
+      `<div class="mini-stat"><span class="ms-label">${m.payment_method||'לא מוגדר'} (${m.count})</span><span class="ms-val">${fmt(m.total)}</span></div>`
+    ).join('') || '<div class="empty" style="padding:16px">אין נתונים</div>';
+
+    // Tasks
+    const taskItems = (Array.isArray(tasks) ? tasks : []).slice(0,4);
+    document.getElementById('dash-tasks').innerHTML = taskItems.length ? `<div class="tasks-list">${taskItems.map(t => `
+      <div class="task-item">
+        <div class="task-cb" onclick="toggleTask('${t.id}',this)">${t.status==='done'?'✓':''}</div>
+        <div class="task-text ${t.status==='done'?'done':''}">${t.title}</div>
+        <div class="task-due" style="color:${t.priority==='urgent'?'var(--danger)':t.priority==='high'?'var(--warning)':'var(--muted)'}">${t.due_date?new Date(t.due_date).toLocaleDateString('he-IL',{day:'numeric',month:'numeric'}):'—'}</div>
+      </div>`).join('')}</div>` : '<div style="font-size:12px;color:var(--muted);text-align:center;padding:10px">אין משימות פתוחות 🎉</div>';
+
+    document.getElementById('nb-tasks').textContent = taskItems.filter(t=>t.status!=='done').length || '';
+
+    // AI insight
+    const aiTexts = [
+      `${stats.totals.total_donors} תורמים במאגר. ${stats.totals.active_standing_orders} בהו"ק פעיל עם ₪${parseInt(stats.totals.monthly_recurring||0).toLocaleString()} חוזרים בחודש.`,
+      `תרומות החודש: ${fmt(paySum.this_month)} · ${paySum.failed_count||0} סירובים ממתינים לטיפול.`,
+      `${stats.totals.gold_donors} תורמי זהב במאגר — כדאי לפנות אליהם לקראת החגים.`,
+    ];
+    document.getElementById('ai-text').textContent = aiTexts[Math.floor(Math.random()*aiTexts.length)];
+
+    // Recent donors
+    const { data: donors } = await window.peachAPI.getDonors({ limit: 6, sort: 'created_at', order: 'DESC' });
+    const avColors = ['av-b','av-g','av-o','av-p','av-r','av-t'];
+    document.getElementById('dash-recent-donors').innerHTML = (donors||[]).map((d,i) => {
+      const init = ((d.first_name||'')[0]||'') + ((d.last_name||'')[0]||'');
+      const isGold = (d.tags||[]).includes('זהב');
+      const active = d.standing_order_active;
+      return `<tr onclick="openDonorProfile('${d.id}')">
+        <td><div class="donor-row"><div class="av ${avColors[i%6]}">${init}</div><div><div class="d-name">${d.first_name||''} ${d.last_name||''}</div></div></div></td>
+        <td style="font-size:12px">${d.mobile||'—'}</td>
+        <td style="font-weight:700;color:var(--success)">${d.donation_amount ? '₪'+parseInt(d.donation_amount).toLocaleString() : '—'}</td>
+        <td>${d.payment_method ? `<span class="badge bb">${d.payment_method}</span>` : '—'}</td>
+        <td>${isGold ? `<span class="badge bp">זהב</span>` : active ? `<span class="badge bg">פעיל</span>` : `<span class="badge bgr">לא פעיל</span>`}</td>
+      </tr>`;
+    }).join('');
+
+  } catch (e) {
+    console.warn('Dashboard load error:', e.message);
+    if (e.message === 'Session expired') return;
+    document.getElementById('ai-text').textContent = 'לא ניתן להתחבר לשרת. ודא שהבקאנד פועל על http://localhost:3001';
+  }
+}
+
+// ── DONORS ──
+async function loadDonors() {
+  const q = document.getElementById('donors-search').value.trim();
+  const sort = document.getElementById('donors-sort').value;
+  const params = { page: donorsPage, limit: 50, sort, q };
+  if (donorsFilter === 'active') params.status = 'active';
+  if (donorsFilter === 'gold') params.gold = 'true';
+  if (donorsFilter === 'no_email') params.no_email = 'true';
+  if (donorsFilter === 'no_phone') params.no_phone = 'true';
+
+  document.getElementById('donors-loading').style.display = 'flex';
+  document.getElementById('donors-table').style.display = 'none';
+  document.getElementById('donors-empty').style.display = 'none';
+
+  try {
+    const { data, total, page } = await window.peachAPI.getDonors(params);
+    donorsTotal = total;
+    document.getElementById('donors-count-sub').textContent = `${total.toLocaleString()} תורמים`;
+    document.getElementById('nb-donors').textContent = total;
+
+    if (!data || data.length === 0) {
+      document.getElementById('donors-empty').style.display = 'block';
+    } else {
+      const avColors = ['av-b','av-g','av-o','av-p','av-r','av-t'];
+      document.getElementById('donors-tbody').innerHTML = data.map((d,i) => {
+        const init = ((d.first_name||'')[0]||'') + ((d.last_name||'')[0]||'');
+        const isGold = (d.tags||[]).includes('זהב');
+        return `<tr onclick="openDonorProfile('${d.id}')">
+          <td><div class="donor-row"><div class="av ${avColors[i%6]}">${init}</div><div><div class="d-name">${d.first_name||''} ${d.last_name||''}</div><div class="d-sub">${d.email||''}</div></div></div></td>
+          <td style="font-size:12px">${d.mobile||'—'}</td>
+          <td style="font-size:12px;color:var(--info)">${d.email||'—'}</td>
+          <td>${d.city||'—'}</td>
+          <td style="font-weight:700;color:var(--success)">${d.monthly_standing_order ? '₪'+parseInt(d.monthly_standing_order).toLocaleString() : '—'}</td>
+          <td>${d.payment_method ? `<span class="badge bb">${d.payment_method}</span>` : '—'}</td>
+          <td style="font-weight:700">${d.total_donations ? '₪'+parseInt(d.total_donations).toLocaleString() : '—'}</td>
+          <td>${isGold ? `<span class="badge bp">זהב</span>` : d.standing_order_active ? `<span class="badge bg">פעיל</span>` : `<span class="badge bgr">לא פעיל</span>`}</td>
+        </tr>`;
+      }).join('');
+      document.getElementById('donors-table').style.display = 'table';
+    }
+
+    const totalPages = Math.ceil(total / 50);
+    document.getElementById('donors-page-info').textContent = `עמוד ${page} מתוך ${totalPages} · ${total} תורמים`;
+    document.getElementById('donors-prev').disabled = page <= 1;
+    document.getElementById('donors-next').disabled = page >= totalPages;
+  } catch (e) {
+    toast('שגיאה בטעינת תורמים: ' + e.message, 'error');
+  } finally {
+    document.getElementById('donors-loading').style.display = 'none';
+  }
+}
+
+function debounceDonorSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { donorsPage = 1; loadDonors(); }, 350);
+}
+
+function changeDonorPage(dir) {
+  donorsPage = Math.max(1, donorsPage + dir);
+  loadDonors();
+}
+
+async function openDonorProfile(id) {
+  currentDonorId = id;
+  navTo('profile');
+  document.getElementById('profile-loading').style.display = 'flex';
+  document.getElementById('profile-content').style.display = 'none';
+  try {
+    const d = await window.peachAPI.getDonor(id);
+    currentDonorData = d;
+    const init = ((d.first_name||'')[0]||'') + ((d.last_name||'')[0]||'');
+    document.getElementById('prof-av').textContent = init;
+    document.getElementById('prof-name').textContent = `${d.first_name||''} ${d.last_name||''}`;
+    document.getElementById('prof-id').textContent = `מזהה: #${d.short_id||d.id?.slice(0,8)} · הצטרף: ${d.created_at ? new Date(d.created_at).toLocaleDateString('he-IL') : '—'}`;
+    document.getElementById('prof-total').textContent = d.total_donations ? '₪'+parseInt(d.total_donations).toLocaleString() : '₪0';
+
+    const tags = [...(d.tags||[])];
+    if (d.standing_order_active) tags.unshift('הו"ק פעיל');
+    if (d.city) tags.push(d.city);
+    if (d.marital_status) tags.push(d.marital_status);
+    document.getElementById('prof-tags').innerHTML = tags.map(t => `<span class="profile-tag">${t}</span>`).join('');
+
+    document.getElementById('profile-call-btn').onclick = () => { window.open(`tel:${d.mobile}`); };
+
+    // Fields
+    const fields = [
+      ['שם פרטי', d.first_name], ['שם משפחה', d.last_name],
+      ['טלפון', d.mobile], ['מייל', d.email],
+      ['שם האמא', d.mothers_name], ['מצב משפחתי', d.marital_status],
+      ['ווטסאפ', d.whatsapp ? 'כן' : 'לא'], ['עיר', d.city],
+      ['אמצעי תרומה', d.payment_method], ['סכום הו"ק', d.monthly_standing_order ? '₪'+parseInt(d.monthly_standing_order).toLocaleString() : '—'],
+    ];
+    document.getElementById('prof-fields').innerHTML = fields.map(([l,v]) => `
+      <div class="field-item"><div class="fl">${l}</div><div class="fv">${v||'—'}</div></div>`).join('');
+
+    // Timeline
+    const txns = d.recent_transactions || [];
+    document.getElementById('prof-timeline').innerHTML = txns.length ? txns.slice(0,5).map((t,i) => `
+      <div class="tl-item"><div class="tl-line"><div class="tl-dot"></div>${i<txns.length-1?'<div class="tl-stem"></div>':''}</div>
+      <div class="tl-content">
+        <div style="display:flex;justify-content:space-between"><div class="tl-title">${t.type==='standing_order'?'הו"ק חודשי':'תרומה חד פעמית'}</div><div class="tl-amount">₪${parseInt(t.amount).toLocaleString()}</div></div>
+        <div class="tl-meta">${t.charge_date ? new Date(t.charge_date).toLocaleDateString('he-IL') : '—'} · ${t.payment_method||'—'} · <span class="${t.status==='success'?'badge bg':'badge br'} " style="font-size:10px;padding:1px 6px">${t.status==='success'?'הצליח':'נכשל'}</span></div>
+      </div></div>`).join('') : '<div class="empty" style="padding:20px">אין היסטוריית תרומות</div>';
+
+    // Dedications
+    const deds = d.dedications || [];
+    document.getElementById('prof-dedications').innerHTML = deds.length ? deds.map(ded => `
+      <div class="ded-item">
+        <div class="ded-date">${ded.hebrew_date||''}</div>
+        <div class="ded-text">${ded.dedication_text}</div>
+        <button class="btn-ghost btn-xs" onclick="deleteDedication('${ded.id}')">✕</button>
+      </div>`).join('') : '<div style="color:var(--muted);font-size:13px">אין הקדשות רשומות</div>';
+
+    // Activity
+    const calls = d.recent_calls || [];
+    const txnsAct = txns.slice(0,3);
+    const activities = [
+      ...calls.map(c => ({ type:'call', icon:'📞', cls:'ai-o', title:`שיחה — ${c.outcome==='donation'?'תרומה ₪'+parseInt(c.donation_amount).toLocaleString():c.outcome==='not_answered'?'לא ענה':c.outcome}`, sub:c.notes||'', time:c.started_at, user:c.user_name })),
+      ...txnsAct.map(t => ({ type:'payment', icon:'💳', cls:'ai-g', title:`תרומה ₪${parseInt(t.amount).toLocaleString()} — ${t.status==='success'?'הצליח':'נכשל'}`, sub:'', time:t.created_at })),
+    ].sort((a,b) => new Date(b.time)-new Date(a.time)).slice(0,8);
+
+    document.getElementById('prof-activity').innerHTML = activities.length ? activities.map(a => `
+      <div class="activity-item"><div class="act-icon ${a.cls}">${a.icon}</div>
+      <div><div class="act-text"><b>${a.title}</b>${a.sub?' — '+a.sub:''}</div>
+      <div class="act-time">${a.time ? new Date(a.time).toLocaleDateString('he-IL',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—'}${a.user?' · '+a.user:''}</div></div></div>`).join('') :
+      '<div class="empty" style="padding:16px">אין פעילות רשומה</div>';
+
+    // AI insight per donor
+    const aiLines = [`סה"כ תרומות: ₪${parseInt(d.total_donations||0).toLocaleString()}.`];
+    if (d.standing_order_active) aiLines.push(`הו"ק פעיל של ₪${parseInt(d.monthly_standing_order||0).toLocaleString()} לחודש.`);
+    if (d.last_call_date) aiLines.push(`שיחה אחרונה: ${new Date(d.last_call_date).toLocaleDateString('he-IL')}.`);
+    if ((d.tags||[]).includes('זהב')) aiLines.push('תורם זהב — פוטנציאל שדרוג גבוה.');
+    document.getElementById('prof-ai-text').textContent = aiLines.join(' ');
+
+    document.getElementById('profile-loading').style.display = 'none';
+    document.getElementById('profile-content').style.display = 'block';
+  } catch (e) {
+    toast('שגיאה בטעינת פרופיל: ' + e.message, 'error');
+  }
+}
+
+// ── PAYMENTS ──
+async function loadPayments(extraParams = {}) {
+  document.getElementById('payments-loading').style.display = 'flex';
+  document.getElementById('payments-table').style.display = 'none';
+  try {
+    const [{ data }, summary] = await Promise.all([
+      window.peachAPI.getPayments({ limit: 50, ...extraParams }),
+      window.peachAPI.getPaymentSummary(),
+    ]);
+
+    const fmt = n => n ? '₪'+parseInt(n).toLocaleString('he-IL') : '₪0';
+    document.getElementById('payments-kpis').innerHTML = `
+      <div class="kpi-card"><div class="kpi-label">גבוי החודש</div><div class="kpi-value" style="color:var(--success)">${fmt(summary.this_month)}</div><div class="kpi-change">${summary.success_count} עסקאות</div></div>
+      <div class="kpi-card"><div class="kpi-label">ממתין</div><div class="kpi-value" style="color:var(--warning)">${fmt(summary.pending)}</div><div class="kpi-change">לאישור</div></div>
+      <div class="kpi-card"><div class="kpi-label">סירובים</div><div class="kpi-value" style="color:var(--danger)">${fmt(summary.failed_this_month)}</div><div class="kpi-change down">${summary.failed_count||0} עסקאות</div></div>`;
+
+    const avColors = ['av-b','av-g','av-o','av-p'];
+    document.getElementById('payments-tbody').innerHTML = (data||[]).map((t,i) => {
+      const init = ((t.donor_name||'?')[0]||'');
+      const statusClass = t.status==='success'?'bg':t.status==='failed'?'br':t.status==='pending'?'bw':'bgr';
+      const statusText = {success:'הצליח',failed:'נכשל',pending:'ממתין',refunded:'הוחזר',cancelled:'בוטל'}[t.status]||t.status;
+      return `<tr>
+        <td><div class="donor-row"><div class="av ${avColors[i%4]}" style="width:28px;height:28px;font-size:11px">${init}</div><div class="d-name">${t.donor_name||'—'}</div></div></td>
+        <td style="font-weight:700;color:${t.status==='success'?'var(--success)':'var(--danger)'}">₪${parseInt(t.amount).toLocaleString()}</td>
+        <td>${t.payment_method ? `<span class="badge bb">${t.payment_method}</span>` : '—'}</td>
+        <td style="font-size:12px">${t.charge_date ? new Date(t.charge_date).toLocaleDateString('he-IL') : '—'}</td>
+        <td><span class="badge ${statusClass}">${statusText}</span></td>
+        <td>${t.status==='success' ? `<button class="btn-ghost" onclick="sendReceipt('${t.id}')">📄 שלח קבלה</button>` : t.status==='failed' ? `<button class="btn-ghost" style="color:var(--warning)" onclick="retryPayment('${t.id}')">🔄 נסה שוב</button>` : '—'}</td>
+      </tr>`;
+    }).join('');
+    document.getElementById('payments-table').style.display = 'table';
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+  finally { document.getElementById('payments-loading').style.display = 'none'; }
+}
+
+// ── CAMPAIGNS ──
+async function loadCampaigns() {
+  document.getElementById('campaigns-loading').style.display = 'flex';
+  document.getElementById('campaigns-grid').style.display = 'none';
+  try {
+    const camps = await window.peachAPI.getCampaigns();
+    document.getElementById('campaigns-loading').style.display = 'none';
+    if (!camps || camps.length === 0) {
+      document.getElementById('campaigns-empty').style.display = 'block';
+      return;
+    }
+    const headers = ['orange','blue','green','orange'];
+    document.getElementById('campaigns-grid').innerHTML = camps.map((c,i) => {
+      const pct = parseFloat(c.pct)||0;
+      const statusBadge = c.status==='active'?'<span class="badge bg">פעיל</span>':c.status==='draft'?'<span class="badge bgr">טיוטה</span>':'<span class="badge bo">הושלם</span>';
+      return `<div class="camp-card">
+        <div class="camp-header ${headers[i%4]}">
+          <div class="camp-name">${c.name}</div>
+          <div class="camp-meta">${statusBadge} · ${c.donor_count||0} תורמים</div>
+        </div>
+        <div class="camp-body">
+          <div class="mini-stat"><span class="ms-label">יעד</span><span class="ms-val">${c.goal_amount ? '₪'+parseInt(c.goal_amount).toLocaleString() : 'ללא יעד'}</span></div>
+          <div class="mini-stat"><span class="ms-label">גויס</span><span class="ms-val" style="color:var(--success)">₪${parseInt(c.raised_amount||0).toLocaleString()}</span></div>
+          <div class="progress-bar" style="margin:8px 0"><div class="progress-fill" style="width:${Math.min(pct,100)}%;background:var(--success)"></div></div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">${pct}% מהיעד</div>
+          <div style="display:flex;gap:6px">
+            ${c.status==='draft' ? `<button class="btn btn-primary btn-sm" onclick="activateCampaign('${c.id}')">🚀 פרסם</button>` : `<button class="btn btn-outline btn-sm">📊 נתונים</button>`}
+            <button class="btn btn-outline btn-sm" onclick="copyLink('${c.page_url||''}')">🔗 קישור</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('campaigns-grid').style.display = 'grid';
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+// ── TELEMARKETING ──
+async function loadCallQueue() {
+  try {
+    callQueue = await window.peachAPI.getCallQueue();
+    document.getElementById('tele-sub').textContent = `${callQueue.length} שיחות ממתינות`;
+    document.getElementById('nb-calls').textContent = callQueue.length || '';
+    const avColors = ['av-b','av-g','av-o','av-p','av-r'];
+    document.getElementById('call-queue-list').innerHTML = callQueue.length ? callQueue.map((d,i) => {
+      const init = ((d.first_name||'')[0]||'')+((d.last_name||'')[0]||'');
+      const isActive = i === callQueueIndex && callStartTime;
+      return `<div class="activity-item" onclick="selectCallDonor(${i})" style="cursor:pointer;${isActive?'background:var(--bg);border-radius:8px;padding:8px':''}">
+        <div class="av ${avColors[i%5]}" style="width:28px;height:28px;font-size:11px;flex-shrink:0">${init}</div>
+        <div style="flex:1">
+          <div class="act-text"><b>${d.first_name} ${d.last_name}</b>${d.monthly_standing_order ? ' — ₪'+parseInt(d.monthly_standing_order).toLocaleString() : ''}</div>
+          <div class="act-time">${d.callback_date ? '📅 לחזור: '+new Date(d.callback_date).toLocaleDateString('he-IL') : d.last_call_date ? 'שיחה אחרונה: '+new Date(d.last_call_date).toLocaleDateString('he-IL') : 'שיחה ראשונה'}</div>
+        </div>
+        ${isActive ? '<span class="badge bg">נוכחי</span>' : ''}
+      </div>`;
+    }).join('') : '<div class="empty" style="padding:20px">🎉 אין שיחות ממתינות</div>';
+  } catch (e) { toast('שגיאה בטעינת תור: '+e.message,'error'); }
+}
+
+async function loadTeleStats() {
+  try {
+    const s = await window.peachAPI.getTeleStats();
+    document.getElementById('tele-kpis').innerHTML = `
+      <div class="kpi-card"><div class="kpi-label">שיחות החודש</div><div class="kpi-value">${s.total_calls||0}</div></div>
+      <div class="kpi-card"><div class="kpi-label">תרומות</div><div class="kpi-value" style="color:var(--success)">${s.donations||0}</div><div class="kpi-change up">₪${parseInt(s.total_raised||0).toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">לא ענו</div><div class="kpi-value" style="color:var(--warning)">${s.not_answered||0}</div></div>
+      <div class="kpi-card"><div class="kpi-label">ממתינים לחזרה</div><div class="kpi-value" style="color:var(--info)">${s.callbacks||0}</div></div>`;
+  } catch {}
+}
+
+function startCallSession() {
+  if (callQueue.length === 0) { toast('אין תורמים בתור','error'); return; }
+  callQueueIndex = 0;
+  selectCallDonor(0);
+}
+
+function selectCallDonor(idx) {
+  if (idx >= callQueue.length) return;
+  callQueueIndex = idx;
+  const d = callQueue[idx];
+  callStartTime = Date.now();
+  document.getElementById('call-donor-name').textContent = `${d.first_name} ${d.last_name}`;
+  document.getElementById('call-donor-phone').textContent = d.mobile || '—';
+  document.getElementById('call-live-dot').style.background = 'var(--success)';
+  document.getElementById('end-call-btn').style.display = 'inline-flex';
+  document.getElementById('start-session-btn').style.display = 'none';
+  document.getElementById('save-call-btn').disabled = false;
+  document.getElementById('skip-call-btn').disabled = false;
+  const scripts = [
+    `"שלום ${d.first_name}, אני מתקשר מישיבת המלך 770. אנחנו מאוד מעריכים את התמיכה שלך. רציתי לעדכן אותך על הפעילות שלנו ולבדוק אם תוכל לחדש את התרומה."`,
+    `"שלום ${d.first_name}, כאן ${d.first_name||'ניר'} מישיבת המלך. מתקשר בקשר לתרומה שלך. יש לנו עדכון חשוב שרציתי לשתף איתך."`,
+  ];
+  document.getElementById('call-script').textContent = scripts[Math.floor(Math.random()*scripts.length)];
+  document.getElementById('call-outcome').value = '';
+  document.getElementById('call-notes').value = '';
+  document.getElementById('call-donation-amount').value = '';
+  document.getElementById('donation-amount-wrap').style.display = 'none';
+  document.getElementById('callback-date-wrap').style.display = 'none';
+  loadCallQueue();
+}
+
+async function saveCall() {
+  const d = callQueue[callQueueIndex];
+  if (!d) return;
+  const outcome = document.getElementById('call-outcome').value;
+  if (!outcome) { toast('יש לבחור תוצאת שיחה','error'); return; }
+  const duration = callStartTime ? Math.round((Date.now()-callStartTime)/1000) : null;
+  try {
+    await window.peachAPI.logCall({
+      donor_id: d.id,
+      outcome,
+      donation_amount: outcome==='donation' ? parseFloat(document.getElementById('call-donation-amount').value)||null : null,
+      notes: document.getElementById('call-notes').value,
+      callback_date: document.getElementById('call-callback-date').value || null,
+      duration_seconds: duration,
+    });
+    toast(`שיחה נשמרה בהצלחה`,'success');
+    if (outcome==='donation') toast(`תרומה ₪${document.getElementById('call-donation-amount').value} נרשמה!`,'success');
+    callQueueIndex++;
+    if (callQueueIndex < callQueue.length) { selectCallDonor(callQueueIndex); }
+    else { endCall(); toast('כל השיחות הושלמו! 🎉','success'); }
+    await loadTeleStats();
+    callQueue.splice(callQueueIndex-1,1);
+    callQueueIndex--;
+    loadCallQueue();
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+function skipCall() {
+  callQueueIndex++;
+  if (callQueueIndex < callQueue.length) selectCallDonor(callQueueIndex);
+  else endCall();
+}
+
+function endCall() {
+  callStartTime = null;
+  document.getElementById('call-donor-name').textContent = 'בחר תורם מהתור';
+  document.getElementById('call-donor-phone').textContent = '—';
+  document.getElementById('call-live-dot').style.background = '#6b7280';
+  document.getElementById('end-call-btn').style.display = 'none';
+  document.getElementById('start-session-btn').style.display = 'inline-flex';
+  document.getElementById('save-call-btn').disabled = true;
+  document.getElementById('skip-call-btn').disabled = true;
+  document.getElementById('call-script').textContent = 'בחר תורם מהתור כדי להתחיל שיחה.';
+}
+
+// ── MAILING ──
+async function loadMailings() {
+  document.getElementById('mailing-loading').style.display = 'flex';
+  document.getElementById('mailing-table').style.display = 'none';
+  try {
+    const [mailings, stats] = await Promise.all([
+      window.peachAPI.getMailings(),
+      window.peachAPI.getMailingStats(),
+    ]);
+    document.getElementById('mailing-kpis').innerHTML = `
+      <div class="kpi-card"><div class="kpi-label">דיוורים סה"כ</div><div class="kpi-value">${stats.total||0}</div></div>
+      <div class="kpi-card"><div class="kpi-label">הודעות נשלחו</div><div class="kpi-value">${parseInt(stats.total_sent||0).toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">פתיחות</div><div class="kpi-value">${parseInt(stats.total_opens||0).toLocaleString()}</div></div>
+      <div class="kpi-card"><div class="kpi-label">שיעור פתיחה</div><div class="kpi-value" style="color:var(--primary)">${stats.avg_open_rate||0}%</div></div>`;
+
+    const typeIcon = {sms:'📱',email:'✉️',whatsapp:'💬'};
+    const statusBadge = {draft:'<span class="badge bgr">טיוטה</span>',sent:'<span class="badge bg">נשלח</span>',scheduled:'<span class="badge bb">מתוזמן</span>',sending:'<span class="badge bw">שולח...</span>'};
+    document.getElementById('mailing-tbody').innerHTML = (mailings||[]).map(m =>
+      `<tr><td>${m.subject||'(ללא נושא)'}</td><td>${typeIcon[m.type]||'?'} ${m.type}</td><td>${parseInt(m.recipient_count||0).toLocaleString()}</td>
+      <td style="font-size:12px">${m.sent_at ? new Date(m.sent_at).toLocaleDateString('he-IL') : m.scheduled_at ? '📅 '+new Date(m.scheduled_at).toLocaleDateString('he-IL') : '—'}</td>
+      <td>${statusBadge[m.status]||m.status}</td>
+      <td>${m.status==='draft' ? `<button class="btn-ghost" onclick="sendMailing('${m.id}')">📤 שלח</button>` : '—'}</td></tr>`
+    ).join('') || `<tr><td colspan="6"><div class="empty" style="padding:20px">אין דיוורים עדיין</div></td></tr>`;
+    document.getElementById('mailing-table').style.display = 'table';
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+  finally { document.getElementById('mailing-loading').style.display = 'none'; }
+}
+
+// ── TASKS ──
+async function loadTasks() {
+  try {
+    const tasks = await window.peachAPI.getTasks();
+    const open = (tasks||[]).filter(t => t.status !== 'done');
+    const done = (tasks||[]).filter(t => t.status === 'done');
+    document.getElementById('tasks-sub').textContent = `${open.length} משימות פתוחות`;
+    document.getElementById('nb-tasks').textContent = open.length || '';
+    const priorityColor = {urgent:'var(--danger)',high:'var(--warning)',normal:'var(--muted)',low:'var(--light)'};
+    const priorityLabel = {urgent:'דחוף 🔴',high:'גבוה 🟡',normal:'רגיל',low:'נמוך'};
+    const taskCard = (title, items) => `
+      <div class="card">
+        <div class="card-header"><span class="card-title">${title}</span></div>
+        <div class="card-body" style="padding:10px 14px">
+          <div class="tasks-list">${items.length ? items.map(t => `
+            <div class="task-item">
+              <div class="task-cb ${t.status==='done'?'done':''}" onclick="toggleTask('${t.id}',this)">${t.status==='done'?'✓':''}</div>
+              <div style="flex:1">
+                <div class="task-text ${t.status==='done'?'done':''}">${t.title}</div>
+                ${t.donor_name ? `<div style="font-size:11px;color:var(--muted)">${t.donor_name}</div>` : ''}
+              </div>
+              <div class="task-due" style="color:${priorityColor[t.priority]||'var(--muted)'}">${priorityLabel[t.priority]||''}</div>
+              <div class="task-due" style="margin-right:8px">${t.due_date ? new Date(t.due_date).toLocaleDateString('he-IL',{day:'numeric',month:'numeric'}) : ''}</div>
+            </div>`).join('') : `<div style="font-size:12px;color:var(--muted);text-align:center;padding:12px">אין משימות כאן</div>`}
+          </div>
+        </div>
+      </div>`;
+    const urgent = open.filter(t => t.priority === 'urgent' || t.priority === 'high');
+    const normal = open.filter(t => t.priority !== 'urgent' && t.priority !== 'high');
+    document.getElementById('tasks-grid').innerHTML = taskCard('🔴 עדיפות גבוהה', urgent) + taskCard('🟢 משימות שוטפות', normal);
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+// ── REPORTS ──
+async function loadReports() {
+  try {
+    const [stats, paySum] = await Promise.all([
+      window.peachAPI.getDonorStats(),
+      window.peachAPI.getPaymentSummary(),
+    ]);
+    const fmt = n => '₪'+parseInt(n||0).toLocaleString('he-IL');
+    document.getElementById('reports-kpis').innerHTML = `
+      <div class="kpi-card"><div class="kpi-label">סה"כ תורמים</div><div class="kpi-value">${stats.totals.total_donors}</div></div>
+      <div class="kpi-card"><div class="kpi-label">תרומות השנה</div><div class="kpi-value">${fmt(paySum.this_year)}</div></div>
+      <div class="kpi-card"><div class="kpi-label">החודש</div><div class="kpi-value">${fmt(paySum.this_month)}</div></div>
+      <div class="kpi-card"><div class="kpi-label">הו"ק חוזר</div><div class="kpi-value">${fmt(stats.totals.monthly_recurring)}/חודש</div></div>`;
+    document.getElementById('reports-methods').innerHTML = (stats.by_method||[]).map(m =>
+      `<div class="mini-stat"><span class="ms-label">${m.payment_method||'לא מוגדר'} (${m.count})</span><span class="ms-val">${fmt(m.total)}</span></div>`
+    ).join('') || '<div class="empty" style="padding:16px">אין נתונים</div>';
+    const avColors = ['av-b','av-g','av-o','av-p','av-r'];
+    document.getElementById('reports-top-donors').innerHTML = (stats.top_donors||[]).map((d,i) => `
+      <tr onclick="openDonorProfile('${d.id}')" style="cursor:pointer">
+        <td><b style="color:var(--primary)">${i+1}</b></td>
+        <td><div class="donor-row"><div class="av ${avColors[i]} " style="width:26px;height:26px;font-size:10px">${((d.first_name||'')[0]||'')+((d.last_name||'')[0]||'')}</div>${d.first_name} ${d.last_name}</div></td>
+        <td style="font-weight:700;color:var(--success)">${fmt(d.total_donations)}</td>
+        <td>—</td>
+        <td>${(d.tags||[]).includes('זהב') ? '<span class="badge bp">זהב</span>' : ''}</td>
+      </tr>`).join('');
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+// ── CREATE / SAVE ACTIONS ──
+async function createDonor() {
+  const data = {
+    first_name: document.getElementById('nd-first-name').value.trim(),
+    last_name: document.getElementById('nd-last-name').value.trim(),
+    mobile: document.getElementById('nd-mobile').value.trim(),
+    email: document.getElementById('nd-email').value.trim(),
+    mothers_name: document.getElementById('nd-mothers-name').value.trim(),
+    city: document.getElementById('nd-city').value.trim(),
+    payment_method: document.getElementById('nd-method').value,
+    monthly_standing_order: parseFloat(document.getElementById('nd-amount').value)||null,
+    whatsapp: document.getElementById('nd-whatsapp').value === 'true',
+    standing_order_active: !!document.getElementById('nd-amount').value,
+  };
+  if (!data.first_name || !data.last_name) { toast('שם פרטי ושם משפחה חובה','error'); return; }
+  try {
+    await window.peachAPI.createDonor(data);
+    toast(`תורם ${data.first_name} ${data.last_name} נוצר!`, 'success');
+    closeModal('new-donor-modal');
+    loadDonors();
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function createPayment() {
+  const donorId = document.getElementById('np-donor-id').value;
+  const amount = parseFloat(document.getElementById('np-amount').value);
+  if (!donorId) { toast('יש לבחור תורם','error'); return; }
+  if (!amount || amount <= 0) { toast('יש להזין סכום תקין','error'); return; }
+  try {
+    await window.peachAPI.createPayment({
+      donor_id: donorId,
+      amount,
+      type: document.getElementById('np-type').value,
+      payment_method: document.getElementById('np-method').value,
+      charge_date: document.getElementById('np-date').value,
+      notes: document.getElementById('np-notes').value,
+    });
+    toast(`עסקה ₪${amount.toLocaleString()} נשמרה!`, 'success');
+    closeModal('new-payment-modal');
+    if (currentPage === 'payments') loadPayments();
+    if (currentPage === 'profile') openDonorProfile(donorId);
+    loadDashboard();
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function createCampaign() {
+  const name = document.getElementById('nc-name').value.trim();
+  if (!name) { toast('שם הקמפיין חובה','error'); return; }
+  try {
+    await window.peachAPI.createCampaign({
+      name, description: document.getElementById('nc-desc').value,
+      type: document.getElementById('nc-type').value,
+      goal_amount: parseFloat(document.getElementById('nc-goal').value)||null,
+      start_date: document.getElementById('nc-start').value||null,
+      end_date: document.getElementById('nc-end').value||null,
+    });
+    toast('קמפיין נוצר בהצלחה!','success');
+    closeModal('new-campaign-modal');
+    loadCampaigns();
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function createTask() {
+  const title = document.getElementById('nt-title').value.trim();
+  if (!title) { toast('כותרת חובה','error'); return; }
+  try {
+    await window.peachAPI.createTask({
+      title, description: document.getElementById('nt-desc').value,
+      priority: document.getElementById('nt-priority').value,
+      due_date: document.getElementById('nt-due').value||null,
+      donor_id: currentDonorId || null,
+    });
+    toast('משימה נוצרה!','success');
+    closeModal('new-task-modal');
+    loadTasks();
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function toggleTask(id, el) {
+  const isDone = el.classList.contains('done');
+  try {
+    await window.peachAPI.updateTask(id, { status: isDone ? 'open' : 'done' });
+    el.classList.toggle('done');
+    el.textContent = isDone ? '' : '✓';
+    const textEl = el.nextElementSibling?.querySelector?.('.task-text') || el.parentElement?.querySelector?.('.task-text');
+    if (textEl) textEl.classList.toggle('done');
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function createDedication() {
+  const text = document.getElementById('ded-text').value.trim();
+  if (!text || !currentDonorId) { toast('טקסט הקדשה חובה','error'); return; }
+  try {
+    await window.peachAPI.addDedication(currentDonorId, {
+      hebrew_date: document.getElementById('ded-hdate').value,
+      gregorian_date: document.getElementById('ded-gdate').value||null,
+      dedication_text: text,
+    });
+    toast('הקדשה נוספה!','success');
+    closeModal('new-ded-modal');
+    openDonorProfile(currentDonorId);
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function deleteDedication(dedId) {
+  if (!confirm('למחוק הקדשה זו?')) return;
+  try {
+    await window.peachAPI.deleteDedication(currentDonorId, dedId);
+    toast('הקדשה נמחקה','success');
+    openDonorProfile(currentDonorId);
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function saveMailing(action) {
+  const body = document.getElementById('nm-body').value.trim();
+  if (!body) { toast('תוכן הודעה חובה','error'); return; }
+  try {
+    const m = await window.peachAPI.createMailing({
+      type: document.getElementById('nm-type').value,
+      subject: document.getElementById('nm-subject').value,
+      body,
+      audience_filter: { type: document.getElementById('nm-audience').value },
+    });
+    if (action === 'send') await window.peachAPI.sendMailing(m.id);
+    toast(action==='send' ? 'הדיוור נשלח!' : 'טיוטה נשמרה','success');
+    closeModal('new-mailing-modal');
+    loadMailings();
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function sendMailing(id) {
+  try {
+    await window.peachAPI.sendMailing(id);
+    toast('הדיוור נשלח!','success');
+    loadMailings();
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function sendReceipt(txnId) {
+  try {
+    await window.peachAPI.sendReceipt(txnId);
+    toast('קבלה נשלחה!','success');
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+async function activateCampaign(id) {
+  try {
+    await window.peachAPI.updateCampaign(id, { status: 'active' });
+    toast('קמפיין פורסם!','success');
+    loadCampaigns();
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+// ── DONOR SEARCH FOR PAYMENT ──
+let donorSearchTimer = null;
+async function searchDonorForPayment() {
+  clearTimeout(donorSearchTimer);
+  const q = document.getElementById('np-donor-search').value.trim();
+  if (q.length < 2) { document.getElementById('np-donor-results').style.display = 'none'; return; }
+  donorSearchTimer = setTimeout(async () => {
+    try {
+      const { data } = await window.peachAPI.getDonors({ q, limit: 8 });
+      const res = document.getElementById('np-donor-results');
+      res.innerHTML = (data||[]).map(d => `
+        <div onclick="selectDonorForPayment('${d.id}','${d.first_name} ${d.last_name}')" style="padding:8px 12px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--border)" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+          <b>${d.first_name} ${d.last_name}</b> <span style="color:var(--muted);font-size:11px">${d.mobile||''}</span>
+        </div>`).join('');
+      res.style.display = data?.length ? 'block' : 'none';
+    } catch {}
+  }, 300);
+}
+
+function selectDonorForPayment(id, name) {
+  document.getElementById('np-donor-id').value = id;
+  document.getElementById('np-donor-search').value = name;
+  document.getElementById('np-donor-results').style.display = 'none';
+}
+
+// ── SETTINGS ──
+async function checkApiHealth() {
+  try {
+    const url = document.getElementById('api-url-input')?.value || 'http://localhost:3001/api';
+    const res = await fetch(url.replace('/api','') + '/api/health');
+    const data = await res.json();
+    if (data.status === 'ok') {
+      document.getElementById('api-status').textContent = '✅ מחובר';
+      document.getElementById('api-status').className = 'badge bg';
+    }
+  } catch {
+    document.getElementById('api-status').textContent = '❌ לא מחובר';
+    document.getElementById('api-status').className = 'badge br';
+  }
+}
+
+async function testApiConnection() {
+  const url = document.getElementById('api-url-input').value.trim();
+  window.PEACH_API_URL = url;
+  window.peachAPI = new PeachAPI();
+  await checkApiHealth();
+}
+
+async function changePassword() {
+  try {
+    await window.peachAPI.changePassword(
+      document.getElementById('set-old-pass').value,
+      document.getElementById('set-new-pass').value
+    );
+    toast('סיסמה שונתה בהצלחה!','success');
+    document.getElementById('set-old-pass').value = '';
+    document.getElementById('set-new-pass').value = '';
+  } catch (e) { toast('שגיאה: '+e.message,'error'); }
+}
+
+function saveSettings() { toast('הגדרות נשמרו!','success'); }
+
+function exportPaymentsCSV() {
+  const url = window.peachAPI.exportPayments({});
+  window.open(url);
+}
+function exportDonors() { toast('ייצוא תורמים — בקרוב',''); }
+function copyLink(url) { navigator.clipboard?.writeText(url); toast('קישור הועתק!','success'); }
+
+// ── MODALS ──
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+});
+
+// ── TOAST ──
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.classList.remove('show'); }, 3200);
+}
+</script>
+</body>
+</html>
